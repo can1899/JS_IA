@@ -1,0 +1,75 @@
+/* General Page Styling */
+body {
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  background-color: #1e1e1e;
+  color: white;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Hangman Game Layout */
+#game-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+/* ✅ Restoring Orange Border for Hangman Canvas */
+#hangmanCanvas {
+  border: 3px solid orange;
+  display: block;
+  background-color: black;
+}
+
+/* Letter Buttons */
+#letter-buttons {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Button Styling */
+button {
+  padding: 10px 15px;
+  font-size: 18px;
+  border: none;
+  background-color: #f39c12;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.2s;
+}
+
+button:hover {
+  background-color: #e67e22;
+}
+
+button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+/* ✅ Fixing Restart & Music Button Alignment */
+.buttons-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Message Styling */
+#message {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* Scoreboard */
+#scoreboard {
+  margin-top: 15px;
+  font-size: 18px;
+}

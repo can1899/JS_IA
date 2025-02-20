@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hangman Game</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Hangman</h1>
+
+    <label for="language">Choose Language:</label>
+    <select id="language">
+      <option value="EN">English</option>
+      <option value="ES">Español</option>
+    </select>
+
+    <div id="game-container">
+      <canvas id="hangmanCanvas" width="300" height="300"></canvas>
+      <div id="game-info">
+        <p id="word-display">_ _ _ _ _</p>
+        <div id="letter-buttons"></div>
+      </div>
+    </div>
+
+    <p id="message"></p>
+
+    <div class="buttons-container">
+      <button id="restart-button">Restart Game</button>
+      <button id="music-button">Play Music</button>
+    </div>
+
+    <div id="scoreboard">
+      <p>Wins: <span id="wins">0</span> | Losses: <span id="losses">0</span></p>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

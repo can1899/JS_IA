@@ -8,6 +8,30 @@ const canvas = document.getElementById("hangmanCanvas");
 const ctx = canvas.getContext("2d");
 const letterButtonsContainer = document.getElementById("letter-buttons");
 
+// ✅ Predefined Spanish words (No API failures)
+const spanishWords = [
+  "GATO",
+  "PERRO",
+  "COCHE",
+  "CASA",
+  "ARBOL",
+  "FIESTA",
+  "MONTAÑA",
+  "NUBE",
+  "ESTRELLA",
+  "MARIPOSA",
+  "JUEGO",
+  "ESCUELA",
+  "LIBRO",
+  "VENTANA",
+  "PUERTA",
+  "COMIDA",
+  "FAMILIA",
+  "AMIGO",
+  "PASTEL",
+  "BEBIDA",
+];
+
 // ✅ Load scores from LocalStorage
 function loadScores() {
   wins = parseInt(localStorage.getItem("wins")) || 0;
@@ -16,12 +40,12 @@ function loadScores() {
   document.getElementById("losses").textContent = losses;
 }
 
-// ✅ Function to clear Hangman drawing
+// ✅ Clear Hangman drawing
 function clearCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-// ✅ Function to draw Hangman parts
+// ✅ Draw Hangman parts
 function drawHangman(step) {
   ctx.lineWidth = 3;
   ctx.strokeStyle = "white";
@@ -72,42 +96,42 @@ function drawHangman(step) {
   ctx.stroke();
 }
 
-// ✅ Fetch a new word from API
+// ✅ Fetch a new word (Spanish uses local list, English uses API)
 async function fetchWord() {
   let language = document.getElementById("language").value;
-  let apiUrl =
-    language === "ES"
-      ? "https://clientes.api.greenborn.com.ar/public-random-word"
-      : "https://random-word-api.herokuapp.com/word?number=1";
 
-  try {
-    const response = await fetch(apiUrl);
-    if (!response.ok) throw new Error("API error");
+  if (language === "ES") {
+    // ✅ Pick a random Spanish word from the list
+    word = spanishWords[Math.floor(Math.random() * spanishWords.length)];
+  } else {
+    // ✅ Fetch an English word from API
+    try {
+      const response = await fetch(
+        "https://random-word-api.herokuapp.com/word?number=1"
+      );
+      if (!response.ok) throw new Error("API error");
 
-    const data = await response.json();
-    word = Array.isArray(data) ? data[0].toUpperCase() : data.toUpperCase();
-
-    if (!word || word.length === 0) {
-      throw new Error("Invalid word received");
+      const data = await response.json();
+      word = data[0].toUpperCase();
+    } catch (error) {
+      console.error("Error fetching word:", error);
+      document.getElementById("message").textContent =
+        "Error fetching word, try again.";
+      document.getElementById("message").style.color = "red";
+      word = "ERROR";
     }
-
-    guessedLetters = Array(word.length).fill("_");
-    document.getElementById("word-display").textContent =
-      guessedLetters.join(" ");
-    mistakes = 0;
-    document.getElementById("message").textContent = "";
-
-    clearCanvas();
-    setupLetterButtons();
-    loadScores();
-    updateButtonText();
-  } catch (error) {
-    console.error("Error fetching word:", error);
-    document.getElementById("message").textContent =
-      "Error fetching word, try again.";
-    document.getElementById("message").style.color = "red";
-    word = "ERROR";
   }
+
+  guessedLetters = Array(word.length).fill("_");
+  document.getElementById("word-display").textContent =
+    guessedLetters.join(" ");
+  mistakes = 0;
+  document.getElementById("message").textContent = "";
+
+  clearCanvas();
+  setupLetterButtons();
+  loadScores();
+  updateButtonText();
 }
 
 // ✅ Setup letter buttons and attach event listeners correctly
@@ -126,7 +150,7 @@ function setupLetterButtons() {
   });
 }
 
-// ✅ Guessing function (Now Fixed)
+// ✅ Guessing function
 function guessLetter(letter, button) {
   if (!word) return;
   button.disabled = true;
@@ -195,7 +219,7 @@ function updateButtonText() {
     language === "ES" ? "Reproducir Música" : "Play Music";
 }
 
-// ✅ Fix Restart Button (Now Fixed)
+// ✅ Fix Restart Button (Now Works 100%)
 document
   .getElementById("restart-button")
   .addEventListener("click", function () {
@@ -206,7 +230,7 @@ document
     updateButtonText();
   });
 
-// ✅ Fix Language Switching (Now Fixed)
+// ✅ Fix Language Switching (Now Works 100%)
 document.getElementById("language").addEventListener("change", () => {
   fetchWord();
   clearCanvas();
@@ -215,7 +239,7 @@ document.getElementById("language").addEventListener("change", () => {
   updateButtonText();
 });
 
-// ✅ Ensure game initializes properly (Final Fix)
+// ✅ Ensure game initializes properly
 window.onload = function () {
   fetchWord();
   setupLetterButtons();
